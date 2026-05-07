@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAudit } from '../context/AuditContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, ArrowRight, Camera, MapPin, SkipForward } from 'lucide-react';
+import { CheckCircle, ArrowRight, Camera, MapPin, SkipForward, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Checklist = () => {
@@ -11,6 +11,15 @@ const Checklist = () => {
   const navigate = useNavigate();
   const [qIndex, setQIndex] = useState(-1); // -1 for Photo/Location step
   const [answers, setAnswers] = useState({});
+
+  const refreshLocation = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
+        updateCurrentSpot({ location: loc });
+      });
+    }
+  };
 
   const phase = state.currentSpot?.phase || 'observation';
   const stopType = state.currentSpot?.stopType;
@@ -108,14 +117,19 @@ const Checklist = () => {
             )}
           </div>
 
-          <div className="bg-blue-50 p-6 rounded-3xl flex items-center gap-4 border border-blue-100">
-            <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${state.currentSpot?.location ? 'bg-green-500 text-white' : 'bg-blue-200 text-blue-600 animate-pulse'}`}>
-              <MapPin size={20} />
+          <div className="bg-blue-50 p-6 rounded-3xl flex items-center justify-between gap-4 border border-blue-100">
+            <div className="flex items-center gap-4">
+              <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${state.currentSpot?.location ? 'bg-green-500 text-white' : 'bg-blue-200 text-blue-600 animate-pulse'}`}>
+                <MapPin size={20} />
+              </div>
+              <div>
+                <div className="font-bold text-blue-800">{state.currentSpot?.location ? t.locLocked : t.locating}</div>
+                <div className="text-xs text-blue-600 font-medium">{state.currentSpot?.location ? `${state.currentSpot.location.lat.toFixed(4)}, ${state.currentSpot.location.lng.toFixed(4)}` : t.gpsWait}</div>
+              </div>
             </div>
-            <div>
-              <div className="font-bold text-blue-800">{state.currentSpot?.location ? t.locLocked : t.locating}</div>
-              <div className="text-xs text-blue-600 font-medium">{state.currentSpot?.location ? `${state.currentSpot.location.lat.toFixed(4)}, ${state.currentSpot.location.lng.toFixed(4)}` : t.gpsWait}</div>
-            </div>
+            <button onClick={refreshLocation} className="p-3 bg-white rounded-2xl text-blue-600 shadow-sm active:scale-90 transition-all">
+              <RefreshCw size={20} />
+            </button>
           </div>
 
           <button onClick={() => setQIndex(0)} className="bg-orange-600 text-white p-6 rounded-3xl font-black text-xl shadow-xl flex items-center justify-center gap-3 mt-4">
