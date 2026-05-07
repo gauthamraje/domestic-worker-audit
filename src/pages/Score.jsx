@@ -14,7 +14,7 @@ const Score = () => {
   const [isDone, setIsDone] = useState(false);
 
   const handleFinish = async () => {
-    if (selected && !isSaving) {
+    if (selected !== null && !isSaving) {
       setIsSaving(true);
       try {
         const finalSpot = { ...state.currentSpot, heatScore: selected };
@@ -34,7 +34,7 @@ const Score = () => {
     { val: 2, label: t.score2, desc: t.score2Desc },
     { val: 3, label: t.score3, desc: t.score3Desc },
     { val: 4, label: t.score4, desc: t.score4Desc },
-    { val: 0, label: t.score0, desc: t.score0Desc }
+    { val: 'Not Scored', label: t.score0, desc: t.score0Desc }
   ];
 
   return (

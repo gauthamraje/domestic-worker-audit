@@ -119,15 +119,16 @@ export const AuditProvider = ({ children }) => {
       // Log for debugging
       console.log("Submitting payload:", payload);
 
-      await fetch(url, {
+      const response = await fetch(url, {
         method: 'POST',
-        mode: 'no-cors', // Essential for GAS Web Apps
-        cache: 'no-cache',
         headers: {
-          'Content-Type': 'text/plain' // Using text/plain to avoid CORS preflight
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify([payload])
       });
+      
+      const result = await response.text();
+      console.log("Server response:", result);
       
       console.log("Submission sent successfully");
       return { success: true };
