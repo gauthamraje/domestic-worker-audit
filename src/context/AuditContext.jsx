@@ -103,7 +103,10 @@ export const AuditProvider = ({ children }) => {
 
   const submitToSheet = async (data, type = 'SPOT') => {
     const url = import.meta.env.VITE_GOOGLE_SCRIPT_URL;
-    if (!url) return { success: false };
+    if (!url) {
+      console.warn("VITE_GOOGLE_SCRIPT_URL is not set");
+      return { success: false };
+    }
     try {
       const payload = { 
         ...data, 
@@ -112,9 +115,24 @@ export const AuditProvider = ({ children }) => {
         userProfile: state.userProfile, 
         language: state.language 
       };
-      await fetch(url, { method: 'POST', body: JSON.stringify([payload]) });
+      
+      // Log for debugging
+      console.log("Submitting payload:", payload);
+
+      await fetch(url, {
+        method: 'POST',
+        mode: 'no-cors', // Essential for GAS Web Apps
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify([payload])
+      });
+      
+      console.log("Submission sent successfully");
       return { success: true };
     } catch (e) {
+      console.error("Submission error:", e);
       return { success: false };
     }
   };
