@@ -12,7 +12,7 @@ export const translations = {
       step3Desc: "Share your perspective and commit to action.",
       startAudit: "Become a Changemaker",
       profileTitle: "Ninja Profile",
-      profileDesc: "Optional: We'll use this to send your impact certificate.",
+      profileDesc: "Optional: We'll use this data to update your actions and skills on the changemaker portfolio.",
       saveAndStart: "Save & Start",
       skipForNow: "Skip for now",
       observationProgress: "Audit Progress",

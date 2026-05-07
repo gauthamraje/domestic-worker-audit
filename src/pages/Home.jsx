@@ -136,7 +136,9 @@ const Home = () => {
               <h2 className="text-2xl font-bold mb-2 flex items-center gap-2 text-gray-800">
                 <User className="text-orange-500" /> {t.profileTitle}
               </h2>
-              <p className="text-gray-500 mb-8 text-sm">{t.profileDesc}</p>
+              <p className="text-gray-500 mb-8 text-sm leading-relaxed">
+                Optional: We'll use this data to update your actions and skills on the <a href="https://solveninja.org" target="_blank" rel="noopener noreferrer" className="text-orange-600 font-bold underline">changemaker portfolio</a>.
+              </p>
               
               <form onSubmit={handleProfileSave} className="flex flex-col gap-5">
                 <div className="space-y-4">
