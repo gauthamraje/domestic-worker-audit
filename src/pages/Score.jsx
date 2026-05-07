@@ -10,13 +10,21 @@ const Score = () => {
   const t = useTranslation('checklist');
   const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleFinish = async () => {
-    if (selected) {
-      const finalSpot = { ...state.currentSpot, heatScore: selected };
-      completeSpot(); 
-      await submitToSheet(finalSpot, 'SPOT');
-      navigate('/');
+    if (selected && !isSaving) {
+      setIsSaving(true);
+      try {
+        const finalSpot = { ...state.currentSpot, heatScore: selected };
+        await submitToSheet(finalSpot, 'SPOT');
+        completeSpot(); 
+        // Small delay to ensure state persists before navigation
+        setTimeout(() => navigate('/'), 100);
+      } catch (e) {
+        console.error("Save failed", e);
+        navigate('/'); // Navigate anyway so user isn't stuck
+      }
     }
   };
 
@@ -49,11 +57,11 @@ const Score = () => {
       </div>
 
       <button 
-        disabled={!selected}
+        disabled={!selected || isSaving}
         onClick={handleFinish}
         className="bg-orange-600 text-white p-6 rounded-3xl font-black text-xl w-full mt-12 shadow-xl disabled:opacity-30 disabled:shadow-none transition-all flex items-center justify-center gap-3"
       >
-        Save Observation <CheckCircle />
+        {isSaving ? 'Saving...' : 'Save Observation'} <CheckCircle className={isSaving ? 'animate-spin' : ''} />
       </button>
     </div>
   );

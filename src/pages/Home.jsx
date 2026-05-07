@@ -9,7 +9,15 @@ const Home = () => {
   const { state, setLanguage, setPhase, updateProfile, resetAudit, startNewSpot } = useAudit();
   const t = useTranslation('home');
   const navigate = useNavigate();
-  const [subStep, setSubStep] = useState('onboarding'); // 'onboarding', 'profile', 'dashboard'
+  
+  // Smartly determine the initial step
+  const getInitialStep = () => {
+    if (state.observationCount > 0 || state.auditCount > 0) return 'dashboard';
+    if (state.userProfile.name) return 'dashboard';
+    return 'onboarding';
+  };
+  
+  const [subStep, setSubStep] = useState(getInitialStep());
 
   const handleProfileSave = (e) => {
     e.preventDefault();
