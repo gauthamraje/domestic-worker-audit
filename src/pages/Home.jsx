@@ -196,7 +196,7 @@ const Home = () => {
               </button>
 
               {state.observationCount >= 1 && state.auditCount >= 1 && (
-                <button onClick={() => window.location.href='/summary'} className="bg-green-600 text-white p-6 rounded-3xl font-black text-xl flex items-center justify-center gap-3 shadow-xl mt-4 animate-pulse">
+                <button onClick={() => navigate('/summary')} className="bg-green-600 text-white p-6 rounded-3xl font-black text-xl flex items-center justify-center gap-3 shadow-xl mt-4 animate-pulse">
                   <CheckCircle /> {t.finishReflection}
                 </button>
               )}

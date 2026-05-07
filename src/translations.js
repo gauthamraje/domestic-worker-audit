@@ -15,11 +15,11 @@ export const translations = {
       profileDesc: "Optional: We'll use this to send your impact certificate.",
       saveAndStart: "Save & Start",
       skipForNow: "Skip for now",
-      observationProgress: "Observation Progress",
-      observationCount: "Observations",
-      auditCount: "Workplace Audits",
-      finishReflection: "Finish & Reflection",
-      clearProgress: "Clear Audit Progress"
+      clearProgress: "Clear Audit Progress",
+      stopGate: "Gate / Building Entry",
+      stopGateDesc: "Where the worker arrives and waits",
+      stopWork: "Work Area",
+      stopWorkDesc: "Kitchen, staircase, corridor, etc."
     },
     capture: {
       stepTitle: "Step",
@@ -68,10 +68,6 @@ export const translations = {
       q7WaitingOpts: ['Yes 👥', 'No / Not sure ❌'],
       q8CanSit: "Can they sit?",
       q8CanSitOpts: ['Yes ✅', 'Standing only ❌'],
-      stopGate: "Gate / Building Entry",
-      stopGateDesc: "Where the worker arrives and waits",
-      stopWork: "Work Area",
-      stopWorkDesc: "Kitchen, staircase, corridor, etc.",
       q1Work: "Sun through windows?",
       q1WorkOpts: ['Yes', 'Sometimes', 'No'],
       q5WorkOpts: ['Bench or chair', 'Ledge or step', 'Floor', 'Nothing'],
@@ -115,7 +111,11 @@ export const translations = {
       observationCount: "अवलोकन",
       auditCount: "कार्यस्थल ऑडिट",
       finishReflection: "समाप्त करें और विचार करें",
-      clearProgress: "ऑडिट प्रगति साफ़ करें"
+      clearProgress: "ऑडिट प्रगति साफ़ करें",
+      stopGate: "गेट / बिल्डिंग प्रवेश",
+      stopGateDesc: "जहाँ कार्यकर्ता आता है और प्रतीक्षा करता है",
+      stopWork: "कार्य क्षेत्र",
+      stopWorkDesc: "रसोई, सीढ़ी, गलियारा, आदि"
     },
     checklist: {
       evidenceTitle: "चरण 1: साक्ष्य",
@@ -165,7 +165,11 @@ export const translations = {
       observationCount: "ಅವಲೋಕನಗಳು",
       auditCount: "ಕೆಲಸದ ಸ್ಥಳದ ಆಡಿಟ್‌ಗಳು",
       finishReflection: "ಮುಕ್ತಾಯ ಮತ್ತು ಪ್ರತಿಫಲನ",
-      clearProgress: "ಆಡಿಟ್ ಪ್ರಗತಿಯನ್ನು ಅಳಿಸಿ"
+      clearProgress: "ಆಡಿಟ್ ಪ್ರಗತಿಯನ್ನು ಅಳಿಸಿ",
+      stopGate: "ಗೇಟ್ / ಕಟ್ಟಡ ಪ್ರವೇಶ",
+      stopGateDesc: "ಕೆಲಸಗಾರರು ಬಂದು ಕಾಯುವ ಸ್ಥಳ",
+      stopWork: "ಕೆಲಸದ ಪ್ರದೇಶ",
+      stopWorkDesc: "ಅಡುಗೆ ಮನೆ, ಮೆಟ್ಟಿಲು, ಕಾರಿಡಾರ್, ಇತ್ಯಾದಿ"
     },
     checklist: {
       evidenceTitle: "ಹಂತ 1: ಪುರಾವೆ",
