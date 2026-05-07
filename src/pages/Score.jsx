@@ -59,7 +59,7 @@ const Score = () => {
       </div>
 
       <button 
-        disabled={!selected || isSaving || isDone}
+        disabled={selected === null || isSaving || isDone}
         onClick={handleFinish}
         className={`p-6 rounded-3xl font-black text-xl w-full mt-12 shadow-xl transition-all flex items-center justify-center gap-3 ${isDone ? 'bg-green-600 text-white' : 'bg-orange-600 text-white disabled:opacity-30 disabled:shadow-none'}`}
       >
