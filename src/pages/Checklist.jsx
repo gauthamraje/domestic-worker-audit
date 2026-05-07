@@ -11,13 +11,24 @@ const Checklist = () => {
   const navigate = useNavigate();
   const [qIndex, setQIndex] = useState(-1); // -1 for Photo/Location step
   const [answers, setAnswers] = useState({});
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const refreshLocation = () => {
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
-        updateCurrentSpot({ location: loc });
-      });
+      setIsRefreshing(true);
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const loc = { lat: position.coords.latitude, lng: position.coords.longitude };
+          updateCurrentSpot({ location: loc });
+          setTimeout(() => setIsRefreshing(false), 800); // Visual feedback duration
+        },
+        (err) => {
+          console.error(err);
+          setIsRefreshing(false);
+          alert("Location access denied or signal lost. Please check your phone settings.");
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
     }
   };
 
@@ -127,8 +138,12 @@ const Checklist = () => {
                 <div className="text-xs text-blue-600 font-medium">{state.currentSpot?.location ? `${state.currentSpot.location.lat.toFixed(4)}, ${state.currentSpot.location.lng.toFixed(4)}` : t.gpsWait}</div>
               </div>
             </div>
-            <button onClick={refreshLocation} className="p-3 bg-white rounded-2xl text-blue-600 shadow-sm active:scale-90 transition-all">
-              <RefreshCw size={20} />
+            <button 
+              onClick={refreshLocation} 
+              disabled={isRefreshing}
+              className={`p-3 bg-white rounded-2xl text-blue-600 shadow-sm active:scale-90 transition-all ${isRefreshing ? 'opacity-50' : ''}`}
+            >
+              <RefreshCw size={20} className={isRefreshing ? 'animate-spin' : ''} />
             </button>
           </div>
 
