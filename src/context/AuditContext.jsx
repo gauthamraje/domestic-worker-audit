@@ -124,7 +124,7 @@ export const AuditProvider = ({ children }) => {
         mode: 'no-cors', // Essential for GAS Web Apps
         cache: 'no-cache',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'text/plain' // Using text/plain to avoid CORS preflight
         },
         body: JSON.stringify([payload])
       });
