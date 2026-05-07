@@ -27,6 +27,57 @@ const Home = () => {
     setSubStep('dashboard');
   };
 
+  if (subStep === 'stopSelection') {
+    return (
+      <div className="page p-6 bg-white min-h-screen">
+        <header className="mb-10 pt-4">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-400">Phase 2: Audit</span>
+          <h2 className="text-3xl font-black text-gray-800 tracking-tight mt-2">What are you observing?</h2>
+          <p className="text-gray-500 font-medium">Select the type of spot you are auditing.</p>
+        </header>
+
+        <div className="flex flex-col gap-4">
+          <motion.button 
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              startNewSpot('audit', 'gate');
+              navigate('/checklist');
+            }}
+            className="p-6 rounded-[2.5rem] bg-gray-50 border-2 border-transparent hover:border-orange-200 text-left transition-all flex items-center gap-6"
+          >
+            <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-3xl shadow-sm">🚪</div>
+            <div>
+              <div className="font-black text-xl text-gray-800">{t.stopGate}</div>
+              <div className="text-sm text-gray-400 font-medium">{t.stopGateDesc}</div>
+            </div>
+          </motion.button>
+
+          <motion.button 
+            whileTap={{ scale: 0.98 }}
+            onClick={() => {
+              startNewSpot('audit', 'work');
+              navigate('/checklist');
+            }}
+            className="p-6 rounded-[2.5rem] bg-gray-50 border-2 border-transparent hover:border-orange-200 text-left transition-all flex items-center gap-6"
+          >
+            <div className="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-3xl shadow-sm">🔧</div>
+            <div>
+              <div className="font-black text-xl text-gray-800">{t.stopWork}</div>
+              <div className="text-sm text-gray-400 font-medium">{t.stopWorkDesc}</div>
+            </div>
+          </motion.button>
+        </div>
+
+        <button 
+          onClick={() => setSubStep('dashboard')}
+          className="text-gray-400 font-bold w-full mt-8"
+        >
+          Back to Dashboard
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="page p-6 bg-gradient-to-b from-orange-50 to-white min-h-screen">
       <header className="mb-8 text-center pt-4">
@@ -137,7 +188,7 @@ const Home = () => {
               </button>
 
               <button 
-                onClick={() => { startNewSpot('audit'); navigate('/checklist'); }} 
+                onClick={() => setSubStep('stopSelection')} 
                 className={`p-6 rounded-3xl font-black text-xl flex items-center justify-between shadow-xl transform active:scale-95 transition-all bg-blue-600 text-white`}
               >
                 <div className="flex items-center gap-3"><Briefcase /> {t.step2}</div>

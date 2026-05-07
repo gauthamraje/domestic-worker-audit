@@ -35,7 +35,7 @@ export const AuditProvider = ({ children }) => {
   const setPhase = (phase) => setState(prev => ({ ...prev, phase }));
   const updateProfile = (updates) => setState(prev => ({ ...prev, userProfile: { ...prev.userProfile, ...updates } }));
 
-  const startNewSpot = (phase) => {
+  const startNewSpot = (phase, stopType = null) => {
     // Attempt to get location automatically
     const spotId = Date.now();
     setState(prev => ({
@@ -43,6 +43,7 @@ export const AuditProvider = ({ children }) => {
       currentSpot: {
         id: spotId,
         phase,
+        stopType,
         timestamp: new Date().toISOString(),
         answers: {},
         photo: null,

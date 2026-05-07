@@ -13,22 +13,53 @@ const Checklist = () => {
   const [answers, setAnswers] = useState({});
 
   const phase = state.currentSpot?.phase || 'observation';
+  const stopType = state.currentSpot?.stopType;
 
-  const observationQuestions = [
-    { id: 'o1', text: t.o1, options: t.o1Opts },
-    { id: 'o2', text: t.o2, options: t.o2Opts },
-    { id: 'o3', text: t.o3, options: t.o3Opts },
-    { id: 'o4', text: t.o4, options: t.o4Opts }
-  ];
+  // Question Set Builder
+  const getQuestions = () => {
+    if (phase === 'observation') {
+      return [
+        { id: 'o1', text: t.o1, options: t.o1Opts },
+        { id: 'o2', text: t.o2, options: t.o2Opts },
+        { id: 'o3', text: t.o3, options: t.o3Opts },
+        { id: 'o4', text: t.o4, options: t.o4Opts },
+        { id: 'o5', text: t.o5, options: t.o5Opts },
+        { id: 'o6', text: t.o6, options: t.o6Opts },
+        { id: 'w1', text: t.w1, options: t.w1Opts },
+        { id: 'w2', text: t.w2, options: t.w2Opts }
+      ];
+    }
 
-  const auditQuestions = [
-    { id: 'a1', text: t.a1, options: t.a1Opts },
-    { id: 'a2', text: t.a2, options: t.a2Opts },
-    { id: 'a3', text: t.a3, options: t.a3Opts },
-    { id: 'a4', text: t.a4, options: t.a4Opts }
-  ];
+    // Phase: Audit
+    const base = [
+      { id: 'q1', text: stopType === 'work' ? t.q1Work : t.o1, options: stopType === 'work' ? t.q1WorkOpts : t.o1Opts },
+      { id: 'q2', text: t.o2, options: t.o2Opts },
+      { id: 'q3', text: t.o3, options: t.o3Opts }
+    ];
 
-  const questions = phase === 'observation' ? observationQuestions : auditQuestions;
+    if (stopType === 'gate') {
+      base.push({ id: 'q4', text: t.o4, options: t.o4Opts });
+    }
+
+    base.push({ id: 'q5', text: t.o5, options: stopType === 'work' ? t.q5WorkOpts : t.o5Opts });
+
+    // Entry Block (Q6, Q7, Q8)
+    base.push({ id: 'q6', text: t.q6Comfort, options: t.q6ComfortOpts });
+    base.push({ id: 'q7', text: t.q7Waiting, options: t.q7WaitingOpts });
+    
+    // Conditional Q8 (only if Q7 is Yes)
+    if (answers['q7']?.includes('Yes')) {
+      base.push({ id: 'q8', text: t.q8CanSit, options: t.q8CanSitOpts });
+    }
+
+    // Worker Block
+    base.push({ id: 'w1', text: t.w1, options: t.w1Opts });
+    base.push({ id: 'w2', text: t.w2, options: t.w2Opts });
+
+    return base;
+  };
+
+  const questions = getQuestions();
 
   const handlePhoto = (e) => {
     const file = e.target.files[0];

@@ -29,10 +29,11 @@ const Score = () => {
   };
 
   const scores = [
-    { val: 1, label: t.score1, desc: "Full shade · cool surfaces", color: "bg-blue-50 text-blue-600 border-blue-100" },
-    { val: 2, label: t.score2, desc: "Partial shade · warm surfaces", color: "bg-green-50 text-green-600 border-green-100" },
-    { val: 3, label: t.score3, desc: "Direct sun · hot surfaces", color: "bg-orange-50 text-orange-600 border-orange-100" },
-    { val: 4, label: t.score4, desc: "No shade · all surfaces hot", color: "bg-red-50 text-red-600 border-red-100" }
+    { val: 1, label: t.score1, desc: t.score1Desc },
+    { val: 2, label: t.score2, desc: t.score2Desc },
+    { val: 3, label: t.score3, desc: t.score3Desc },
+    { val: 4, label: t.score4, desc: t.score4Desc },
+    { val: 0, label: t.score0, desc: t.score0Desc }
   ];
 
   return (
