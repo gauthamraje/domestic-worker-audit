@@ -75,14 +75,15 @@ export const AuditProvider = ({ children }) => {
 
   const completeSpot = () => {
     setState(prev => {
+      if (!prev.currentSpot) return prev; // Safety check
       const newSpots = [...prev.spots, prev.currentSpot];
       const isObservation = prev.currentSpot.phase === 'observation';
       return {
         ...prev,
         spots: newSpots,
         currentSpot: null,
-        observationCount: isObservation ? prev.observationCount + 1 : prev.observationCount,
-        auditCount: !isObservation ? prev.auditCount + 1 : prev.auditCount
+        observationCount: (isObservation ? (prev.observationCount || 0) + 1 : (prev.observationCount || 0)),
+        auditCount: (!isObservation ? (prev.auditCount || 0) + 1 : (prev.auditCount || 0))
       };
     });
   };

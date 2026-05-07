@@ -11,6 +11,7 @@ const Score = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDone, setIsDone] = useState(false);
 
   const handleFinish = async () => {
     if (selected && !isSaving) {
@@ -19,11 +20,11 @@ const Score = () => {
         const finalSpot = { ...state.currentSpot, heatScore: selected };
         await submitToSheet(finalSpot, 'SPOT');
         completeSpot(); 
-        // Small delay to ensure state persists before navigation
-        setTimeout(() => navigate('/'), 100);
+        setIsDone(true);
+        setTimeout(() => navigate('/'), 800);
       } catch (e) {
         console.error("Save failed", e);
-        navigate('/'); // Navigate anyway so user isn't stuck
+        navigate('/');
       }
     }
   };
@@ -58,11 +59,12 @@ const Score = () => {
       </div>
 
       <button 
-        disabled={!selected || isSaving}
+        disabled={!selected || isSaving || isDone}
         onClick={handleFinish}
-        className="bg-orange-600 text-white p-6 rounded-3xl font-black text-xl w-full mt-12 shadow-xl disabled:opacity-30 disabled:shadow-none transition-all flex items-center justify-center gap-3"
+        className={`p-6 rounded-3xl font-black text-xl w-full mt-12 shadow-xl transition-all flex items-center justify-center gap-3 ${isDone ? 'bg-green-600 text-white' : 'bg-orange-600 text-white disabled:opacity-30 disabled:shadow-none'}`}
       >
-        {isSaving ? 'Saving...' : 'Save Observation'} <CheckCircle className={isSaving ? 'animate-spin' : ''} />
+        {isDone ? 'Saved! ✨' : isSaving ? 'Saving...' : 'Save Observation'} 
+        <CheckCircle className={(isSaving && !isDone) ? 'animate-spin' : ''} />
       </button>
     </div>
   );
