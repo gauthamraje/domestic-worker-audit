@@ -201,7 +201,12 @@ const Home = () => {
                 </button>
               )}
 
-              <button onClick={resetAudit} className="mt-12 text-[10px] text-gray-300 font-bold uppercase tracking-[0.2em] text-center hover:text-orange-400 transition-colors">{t.clearProgress}</button>
+              <button 
+                onClick={() => { resetAudit(); setSubStep('onboarding'); }} 
+                className="mt-12 text-[10px] text-gray-300 font-bold uppercase tracking-[0.2em] text-center hover:text-orange-400 transition-colors"
+              >
+                {t.clearProgress}
+              </button>
             </div>
           </motion.div>
         )}
