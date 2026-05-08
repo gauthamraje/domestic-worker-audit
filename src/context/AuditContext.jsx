@@ -28,6 +28,34 @@ export const AuditProvider = ({ children }) => {
   const [state, setState] = useState(loadState);
 
   useEffect(() => {
+    // Allow WA-bot deep links like `/?user=9487231521` to pre-fill profile once.
+    // We only set it if profile isn't already complete, so we don't overwrite real user data.
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const userParam = params.get('user');
+      const phone = (userParam || '').trim();
+      if (!phone) return;
+
+      setState(prev => {
+        const nameOk = Boolean(prev.userProfile?.name?.trim());
+        const phoneOk = Boolean(prev.userProfile?.phone?.trim());
+        if (nameOk && phoneOk) return prev;
+
+        return {
+          ...prev,
+          userProfile: {
+            ...prev.userProfile,
+            name: prev.userProfile?.name?.trim() ? prev.userProfile.name : 'WA Bot user',
+            phone: prev.userProfile?.phone?.trim() ? prev.userProfile.phone : phone
+          }
+        };
+      });
+    } catch (e) {
+      // Ignore malformed URL / environments without window
+    }
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 

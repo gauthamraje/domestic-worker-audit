@@ -11,6 +11,15 @@ const Home = () => {
   const tc = useTranslation('capture');
   const navigate = useNavigate();
 
+  const hasDeepLinkUser = useMemo(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return Boolean(params.get('user')?.trim());
+    } catch {
+      return false;
+    }
+  }, []);
+
   const isProfileComplete = useMemo(() => {
     const nameOk = Boolean(state.userProfile?.name?.trim());
     const phoneOk = Boolean(state.userProfile?.phone?.trim());
@@ -147,7 +156,15 @@ const Home = () => {
                 </div>
 
                 <button 
-                  onClick={() => setSubStep('profile')} 
+                  onClick={() => {
+                    // Deep link via WA bot already pre-fills and persists profile.
+                    // So we can skip profile collection and go straight to the main dashboard.
+                    if (hasDeepLinkUser && isProfileComplete) {
+                      setSubStep('dashboard');
+                      return;
+                    }
+                    setSubStep('profile');
+                  }}
                   className="w-full mt-8 bg-orange-600 text-white p-5 rounded-2xl font-black text-lg shadow-lg flex items-center justify-center gap-2"
                 >
                   {t.startAudit} <PlayCircle size={20} />
