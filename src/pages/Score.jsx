@@ -38,34 +38,38 @@ const Score = () => {
   ];
 
   return (
-    <div className="page p-6 bg-white min-h-screen">
-      <header className="mb-10 pt-4">
-        <h2 className="text-3xl font-black text-gray-800 tracking-tight mb-2">{t.scoreTitle}</h2>
-        <p className="text-gray-500 font-medium">Pick the level that matches the clues you saw.</p>
+    <div className="page bg-white">
+      <header className="p-6 pb-2">
+        <h2 className="text-3xl font-black text-gray-800 tracking-tight mb-1">{t.scoreTitle}</h2>
+        <p className="text-gray-500 text-sm font-medium">Pick the level that matches the clues.</p>
       </header>
 
-      <div className="flex flex-col gap-4 flex-1">
-        {scores.map(s => (
-          <motion.button 
-            key={s.val}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setSelected(s.val)}
-            className={`p-6 rounded-3xl border-2 text-left transition-all flex flex-col gap-1 ${selected === s.val ? 'border-orange-500 shadow-lg scale-[1.02]' : 'border-gray-50 bg-gray-50 opacity-70'}`}
-          >
-            <div className={`text-lg font-black ${selected === s.val ? 'text-orange-600' : 'text-gray-700'}`}>{s.label}</div>
-            <div className="text-sm font-medium text-gray-400">{s.desc}</div>
-          </motion.button>
-        ))}
+      <div className="content-area py-4">
+        <div className="flex flex-col gap-3">
+          {scores.map(s => (
+            <motion.button 
+              key={s.val}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setSelected(s.val)}
+              className={`p-5 rounded-3xl border-2 text-left transition-all flex flex-col gap-1 ${selected === s.val ? 'border-orange-500 bg-orange-50/30' : 'border-gray-50 bg-gray-50'}`}
+            >
+              <div className={`text-lg font-black ${selected === s.val ? 'text-orange-600' : 'text-gray-700'}`}>{s.label}</div>
+              <div className="text-xs font-medium text-gray-400">{s.desc}</div>
+            </motion.button>
+          ))}
+        </div>
       </div>
 
-      <button 
-        disabled={selected === null || isSaving || isDone}
-        onClick={handleFinish}
-        className={`p-6 rounded-3xl font-black text-xl w-full mt-8 mb-4 shadow-xl transition-all flex items-center justify-center gap-3 ${isDone ? 'bg-green-600 text-white' : 'bg-orange-600 text-white disabled:opacity-30 disabled:shadow-none'}`}
-      >
-        {isDone ? 'Saved! ✨' : isSaving ? 'Saving...' : 'Save Observation'} 
-        <CheckCircle className={(isSaving && !isDone) ? 'animate-spin' : ''} />
-      </button>
+      <div className="fixed-footer">
+        <button 
+          disabled={selected === null || isSaving || isDone}
+          onClick={handleFinish}
+          className={`p-5 rounded-3xl font-black text-xl w-full shadow-xl transition-all flex items-center justify-center gap-3 ${isDone ? 'bg-green-600 text-white' : 'bg-orange-600 text-white disabled:opacity-30 disabled:shadow-none'}`}
+        >
+          {isDone ? 'Saved! ✨' : isSaving ? 'Saving...' : 'Save Observation'} 
+          <CheckCircle className={(isSaving && !isDone) ? 'animate-spin' : ''} size={24} />
+        </button>
+      </div>
     </div>
   );
 };

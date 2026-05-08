@@ -13,12 +13,26 @@ body {
 }
 
 .page {
-  min-height: 100vh;
-  min-height: 100dvh; /* Dynamic viewport height for mobile */
+  height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
-  padding-bottom: env(safe-area-inset-bottom, 24px); /* Safe area for iPhones */
+  overflow: hidden; /* Prevent the whole page from scrolling */
+  padding-bottom: env(safe-area-inset-bottom, 12px);
+  background-color: white;
+}
+
+.content-area {
+  flex: 1;
+  overflow-y: auto; /* Only this part scrolls */
+  padding: 0 24px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.fixed-footer {
+  padding: 16px 24px;
+  background: white;
+  border-top: 1px solid rgba(0,0,0,0.05);
 }
 
 .card {

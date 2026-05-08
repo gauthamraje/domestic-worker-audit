@@ -108,14 +108,14 @@ const Checklist = () => {
 
   if (qIndex === -1) {
     return (
-      <div className="page p-6 bg-white min-h-screen">
-        <header className="mb-10 pt-4">
+      <div className="page bg-white">
+        <header className="p-6 pb-2">
           <span className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-400">{t.evidenceTitle}</span>
-          <h2 className="text-3xl font-black text-gray-800 leading-tight mt-2">{t.photoSnap}</h2>
-          <p className="text-gray-500 font-medium mt-2">{t.photoDesc}</p>
+          <h2 className="text-3xl font-black text-gray-800 leading-tight mt-1">{t.photoSnap}</h2>
+          <p className="text-gray-500 text-sm font-medium mt-1">{t.photoDesc}</p>
         </header>
 
-        <div className="flex flex-col gap-6 flex-1 justify-between pb-4">
+        <div className="content-area py-4">
           <div className="flex flex-col gap-6">
             <div className="aspect-square bg-gray-50 rounded-[2.5rem] border-4 border-dashed border-gray-100 flex flex-col items-center justify-center relative overflow-hidden">
               {state.currentSpot?.photo ? (
@@ -135,21 +135,19 @@ const Checklist = () => {
                   <MapPin size={20} />
                 </div>
                 <div>
-                  <div className="font-bold text-blue-800">{state.currentSpot?.location ? t.locLocked : t.locating}</div>
-                  <div className="text-xs text-blue-600 font-medium">{state.currentSpot?.location ? `${state.currentSpot.location.lat.toFixed(4)}, ${state.currentSpot.location.lng.toFixed(4)}` : t.gpsWait}</div>
+                  <div className="font-bold text-blue-800 text-sm">{state.currentSpot?.location ? t.locLocked : t.locating}</div>
+                  <div className="text-[10px] text-blue-600 font-medium">{state.currentSpot?.location ? `${state.currentSpot.location.lat.toFixed(4)}, ${state.currentSpot.location.lng.toFixed(4)}` : t.gpsWait}</div>
                 </div>
               </div>
-              <button 
-                onClick={refreshLocation} 
-                disabled={isRefreshing}
-                className={`p-3 bg-white rounded-2xl text-blue-600 shadow-sm active:scale-90 transition-all ${isRefreshing ? 'opacity-50' : ''}`}
-              >
-                <RefreshCw size={20} className={isRefreshing ? 'animate-spin' : ''} />
+              <button onClick={refreshLocation} disabled={isRefreshing} className="p-2 bg-white rounded-xl text-blue-600 shadow-sm active:scale-90 transition-all">
+                <RefreshCw size={18} className={isRefreshing ? 'animate-spin' : ''} />
               </button>
             </div>
           </div>
+        </div>
 
-          <button onClick={() => setQIndex(0)} className="bg-orange-600 text-white p-6 rounded-3xl font-black text-xl shadow-xl flex items-center justify-center gap-3 mt-4">
+        <div className="fixed-footer">
+          <button onClick={() => setQIndex(0)} className="bg-orange-600 text-white p-5 rounded-3xl font-black text-xl shadow-xl flex items-center justify-center gap-3 w-full">
             {state.currentSpot?.photo ? t.next : t.skipContinue} <SkipForward />
           </button>
         </div>
@@ -160,9 +158,9 @@ const Checklist = () => {
   const currentQ = questions[qIndex];
 
   return (
-    <div className="page p-6 bg-white min-h-screen">
-      <header className="mb-10 pt-4">
-        <div className="flex justify-between items-center mb-2">
+    <div className="page bg-white">
+      <header className="p-6 pb-2">
+        <div className="flex justify-between items-center mb-3">
           <span className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-400">
             {phase} Phase
           </span>
@@ -179,29 +177,26 @@ const Checklist = () => {
         </div>
       </header>
 
-      <motion.div 
-        key={qIndex}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        className="mb-12"
-      >
-        <h2 className="text-3xl font-bold text-gray-800 leading-tight mb-4">{currentQ.text}</h2>
-      </motion.div>
+      <div className="content-area py-6">
+        <motion.div key={qIndex} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+          <h2 className="text-3xl font-bold text-gray-800 leading-tight mb-8">{currentQ.text}</h2>
+        </motion.div>
 
-      <div className="flex flex-col gap-4">
-        {currentQ.options.map((opt, i) => (
-          <motion.button 
-            key={opt}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            onClick={() => handleAnswer(opt)}
-            className="group p-6 rounded-3xl border-2 border-gray-50 bg-gray-50 text-left hover:border-orange-500 hover:bg-white hover:shadow-xl transition-all flex justify-between items-center"
-          >
-            <span className="font-bold text-gray-700 group-hover:text-orange-600">{opt}</span>
-            <ArrowRight className="text-gray-300 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" size={20} />
-          </motion.button>
-        ))}
+        <div className="flex flex-col gap-3">
+          {currentQ.options.map((opt, i) => (
+            <motion.button 
+              key={opt}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              onClick={() => handleAnswer(opt)}
+              className="group p-5 rounded-3xl border-2 border-gray-50 bg-gray-50 text-left hover:border-orange-500 hover:bg-white transition-all flex justify-between items-center"
+            >
+              <span className="font-bold text-gray-700 group-hover:text-orange-600">{opt}</span>
+              <ArrowRight className="text-gray-300 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" size={20} />
+            </motion.button>
+          ))}
+        </div>
       </div>
     </div>
   );
