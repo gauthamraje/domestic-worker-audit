@@ -116,21 +116,16 @@ export const AuditProvider = ({ children }) => {
         language: state.language 
       };
       
-      // Log for debugging
       console.log("Submitting payload:", payload);
 
-      const response = await fetch(url, {
+      // Using 'text/plain' and 'no-cors' for maximum compatibility with Apps Script
+      await fetch(url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        mode: 'no-cors', 
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify([payload])
       });
       
-      const result = await response.text();
-      console.log("Server response:", result);
-      
-      console.log("Submission sent successfully");
       return { success: true };
     } catch (e) {
       console.error("Submission error:", e);
