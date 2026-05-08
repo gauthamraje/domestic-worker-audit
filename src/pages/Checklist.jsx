@@ -115,36 +115,38 @@ const Checklist = () => {
           <p className="text-gray-500 font-medium mt-2">{t.photoDesc}</p>
         </header>
 
-        <div className="flex flex-col gap-6">
-          <div className="aspect-square bg-gray-50 rounded-[2.5rem] border-4 border-dashed border-gray-100 flex flex-col items-center justify-center relative overflow-hidden">
-            {state.currentSpot?.photo ? (
-              <img src={state.currentSpot.photo} className="w-full h-full object-cover" alt="Captured" />
-            ) : (
-              <>
-                <Camera size={48} className="text-gray-200 mb-4" />
-                <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="absolute inset-0 opacity-0 cursor-pointer" />
-                <span className="text-gray-400 font-bold">{t.tapSnap}</span>
-              </>
-            )}
-          </div>
-
-          <div className="bg-blue-50 p-6 rounded-3xl flex items-center justify-between gap-4 border border-blue-100">
-            <div className="flex items-center gap-4">
-              <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${state.currentSpot?.location ? 'bg-green-500 text-white' : 'bg-blue-200 text-blue-600 animate-pulse'}`}>
-                <MapPin size={20} />
-              </div>
-              <div>
-                <div className="font-bold text-blue-800">{state.currentSpot?.location ? t.locLocked : t.locating}</div>
-                <div className="text-xs text-blue-600 font-medium">{state.currentSpot?.location ? `${state.currentSpot.location.lat.toFixed(4)}, ${state.currentSpot.location.lng.toFixed(4)}` : t.gpsWait}</div>
-              </div>
+        <div className="flex flex-col gap-6 flex-1 justify-between pb-4">
+          <div className="flex flex-col gap-6">
+            <div className="aspect-square bg-gray-50 rounded-[2.5rem] border-4 border-dashed border-gray-100 flex flex-col items-center justify-center relative overflow-hidden">
+              {state.currentSpot?.photo ? (
+                <img src={state.currentSpot.photo} className="w-full h-full object-cover" alt="Captured" />
+              ) : (
+                <>
+                  <Camera size={48} className="text-gray-200 mb-4" />
+                  <input type="file" accept="image/*" capture="environment" onChange={handlePhoto} className="absolute inset-0 opacity-0 cursor-pointer" />
+                  <span className="text-gray-400 font-bold">{t.tapSnap}</span>
+                </>
+              )}
             </div>
-            <button 
-              onClick={refreshLocation} 
-              disabled={isRefreshing}
-              className={`p-3 bg-white rounded-2xl text-blue-600 shadow-sm active:scale-90 transition-all ${isRefreshing ? 'opacity-50' : ''}`}
-            >
-              <RefreshCw size={20} className={isRefreshing ? 'animate-spin' : ''} />
-            </button>
+
+            <div className="bg-blue-50 p-6 rounded-3xl flex items-center justify-between gap-4 border border-blue-100">
+              <div className="flex items-center gap-4">
+                <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${state.currentSpot?.location ? 'bg-green-500 text-white' : 'bg-blue-200 text-blue-600 animate-pulse'}`}>
+                  <MapPin size={20} />
+                </div>
+                <div>
+                  <div className="font-bold text-blue-800">{state.currentSpot?.location ? t.locLocked : t.locating}</div>
+                  <div className="text-xs text-blue-600 font-medium">{state.currentSpot?.location ? `${state.currentSpot.location.lat.toFixed(4)}, ${state.currentSpot.location.lng.toFixed(4)}` : t.gpsWait}</div>
+                </div>
+              </div>
+              <button 
+                onClick={refreshLocation} 
+                disabled={isRefreshing}
+                className={`p-3 bg-white rounded-2xl text-blue-600 shadow-sm active:scale-90 transition-all ${isRefreshing ? 'opacity-50' : ''}`}
+              >
+                <RefreshCw size={20} className={isRefreshing ? 'animate-spin' : ''} />
+              </button>
+            </div>
           </div>
 
           <button onClick={() => setQIndex(0)} className="bg-orange-600 text-white p-6 rounded-3xl font-black text-xl shadow-xl flex items-center justify-center gap-3 mt-4">

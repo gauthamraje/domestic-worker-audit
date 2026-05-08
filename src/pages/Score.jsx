@@ -44,7 +44,7 @@ const Score = () => {
         <p className="text-gray-500 font-medium">Pick the level that matches the clues you saw.</p>
       </header>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 flex-1">
         {scores.map(s => (
           <motion.button 
             key={s.val}
@@ -61,7 +61,7 @@ const Score = () => {
       <button 
         disabled={selected === null || isSaving || isDone}
         onClick={handleFinish}
-        className={`p-6 rounded-3xl font-black text-xl w-full mt-12 shadow-xl transition-all flex items-center justify-center gap-3 ${isDone ? 'bg-green-600 text-white' : 'bg-orange-600 text-white disabled:opacity-30 disabled:shadow-none'}`}
+        className={`p-6 rounded-3xl font-black text-xl w-full mt-8 mb-4 shadow-xl transition-all flex items-center justify-center gap-3 ${isDone ? 'bg-green-600 text-white' : 'bg-orange-600 text-white disabled:opacity-30 disabled:shadow-none'}`}
       >
         {isDone ? 'Saved! ✨' : isSaving ? 'Saving...' : 'Save Observation'} 
         <CheckCircle className={(isSaving && !isDone) ? 'animate-spin' : ''} />

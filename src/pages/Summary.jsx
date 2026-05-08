@@ -100,7 +100,7 @@ const Summary = () => {
           initial={{ x: 20, opacity: 0 }} 
           animate={{ x: 0, opacity: 1 }} 
           exit={{ x: -20, opacity: 0 }}
-          className="flex flex-col h-[65vh] justify-between"
+          className="flex flex-col flex-1 justify-between pb-8"
         >
           <div>
             <div className="text-5xl mb-6">{currentQ.icon}</div>

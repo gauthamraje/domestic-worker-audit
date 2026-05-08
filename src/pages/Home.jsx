@@ -80,6 +80,7 @@ const Home = () => {
 
   return (
     <div className="page p-6 bg-gradient-to-b from-orange-50 to-white min-h-screen">
+      <div className="flex flex-col flex-1">
       <header className="mb-8 text-center pt-4">
         <h1 className="text-3xl font-black text-orange-600 tracking-tight">{t.title}</h1>
         <p className="text-gray-600 font-medium">{t.subtitle}</p>
@@ -213,6 +214,7 @@ const Home = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      </div>
     </div>
   );
 };
