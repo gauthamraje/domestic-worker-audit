@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useAudit } from '../context/AuditContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,20 +10,32 @@ const Home = () => {
   const t = useTranslation('home');
   const tc = useTranslation('capture');
   const navigate = useNavigate();
+
+  const isProfileComplete = useMemo(() => {
+    const nameOk = Boolean(state.userProfile?.name?.trim());
+    const phoneOk = Boolean(state.userProfile?.phone?.trim());
+    return nameOk && phoneOk;
+  }, [state.userProfile]);
   
   // Smartly determine the initial step
   const getInitialStep = () => {
     if (state.observationCount > 0 || state.auditCount > 0) return 'dashboard';
-    if (state.userProfile.name) return 'dashboard';
+    if (isProfileComplete) return 'dashboard';
     return 'onboarding';
   };
   
   const [subStep, setSubStep] = useState(getInitialStep());
+  const [profileError, setProfileError] = useState('');
 
   const handleProfileSave = (e) => {
     e.preventDefault();
-    const name = e.target.name.value;
-    const phone = e.target.phone.value;
+    const name = e.target.name.value?.trim();
+    const phone = e.target.phone.value?.trim();
+    if (!name || !phone) {
+      setProfileError('Please enter your name and WhatsApp number.');
+      return;
+    }
+    setProfileError('');
     updateProfile({ name, phone });
     setSubStep('dashboard');
   };
@@ -42,6 +54,10 @@ const Home = () => {
             <motion.button 
               whileTap={{ scale: 0.98 }}
               onClick={() => {
+                if (!isProfileComplete) {
+                  setSubStep('profile');
+                  return;
+                }
                 startNewSpot('audit', 'gate');
                 navigate('/checklist');
               }}
@@ -57,6 +73,10 @@ const Home = () => {
             <motion.button 
               whileTap={{ scale: 0.98 }}
               onClick={() => {
+                if (!isProfileComplete) {
+                  setSubStep('profile');
+                  return;
+                }
                 startNewSpot('audit', 'work');
                 navigate('/checklist');
               }}
@@ -150,20 +170,34 @@ const Home = () => {
                   <div className="space-y-3">
                     <div className="relative">
                       <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-                      <input name="name" placeholder="Full Name" className="w-full p-4 pl-12 border border-gray-100 bg-gray-50 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all text-sm" />
+                      <input
+                        name="name"
+                        required
+                        defaultValue={state.userProfile?.name || ''}
+                        placeholder="Full Name"
+                        className="w-full p-4 pl-12 border border-gray-100 bg-gray-50 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all text-sm"
+                      />
                     </div>
                     <div className="relative">
                       <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-xs">WA</div>
-                      <input name="phone" placeholder="WhatsApp Number" className="w-full p-4 pl-12 border border-gray-100 bg-gray-50 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all text-sm" />
+                      <input
+                        name="phone"
+                        required
+                        inputMode="tel"
+                        defaultValue={state.userProfile?.phone || ''}
+                        placeholder="WhatsApp Number"
+                        className="w-full p-4 pl-12 border border-gray-100 bg-gray-50 rounded-2xl focus:ring-2 focus:ring-orange-500 focus:outline-none transition-all text-sm"
+                      />
                     </div>
                   </div>
+
+                  {profileError && (
+                    <div className="text-xs font-bold text-red-500">{profileError}</div>
+                  )}
                   
                   <div className="flex flex-col gap-2 mt-4">
                     <button type="submit" className="bg-orange-600 text-white p-5 rounded-2xl font-black text-lg shadow-lg">
                       {t.saveAndStart}
-                    </button>
-                    <button type="button" onClick={() => setSubStep('dashboard')} className="text-gray-400 font-bold py-2 text-[10px] uppercase tracking-wider text-center">
-                      {t.skipForNow}
                     </button>
                   </div>
                 </form>
@@ -190,7 +224,17 @@ const Home = () => {
               </div>
 
               <div className="flex flex-col gap-4">
-                <button onClick={() => { startNewSpot('observation'); navigate('/checklist'); }} className="bg-orange-600 text-white p-5 rounded-3xl font-black text-lg flex items-center justify-between shadow-xl transition-all">
+                <button
+                  onClick={() => {
+                    if (!isProfileComplete) {
+                      setSubStep('profile');
+                      return;
+                    }
+                    startNewSpot('observation');
+                    navigate('/checklist');
+                  }}
+                  className="bg-orange-600 text-white p-5 rounded-3xl font-black text-lg flex items-center justify-between shadow-xl transition-all"
+                >
                   <div className="flex items-center gap-3"><MapPin size={24} /> {t.step1}</div>
                   <span className="bg-orange-500 rounded-full w-7 h-7 flex items-center justify-center">+</span>
                 </button>
