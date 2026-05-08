@@ -31,9 +31,9 @@ const Home = () => {
     return (
       <div className="page bg-white">
         <header className="p-6 pb-2">
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-400">Phase 2: Audit</span>
-          <h2 className="text-2xl font-black text-gray-800 tracking-tight mt-1">What are you observing?</h2>
-          <p className="text-gray-500 text-sm font-medium">Select the type of spot you are auditing.</p>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-orange-400">{t.capture.auditPhase}</span>
+          <h2 className="text-2xl font-black text-gray-800 tracking-tight mt-1">{t.capture.spotTitle}</h2>
+          <p className="text-gray-500 text-sm font-medium">{t.capture.spotSubtitle}</p>
         </header>
 
         <div className="content-area py-4">
@@ -141,8 +141,8 @@ const Home = () => {
                 <h2 className="text-xl font-bold mb-2 flex items-center gap-2 text-gray-800">
                   <User size={20} className="text-orange-500" /> {t.profileTitle}
                 </h2>
-                <p className="text-gray-500 mb-6 text-xs leading-relaxed">
-                  Optional: Link this to your <a href="https://solveninja.org" target="_blank" rel="noopener noreferrer" className="text-orange-600 font-bold underline">portfolio</a>.
+                <p className="text-xs text-gray-500 leading-relaxed mb-4">
+                  {t.home.portfolioLinkPrefix}<a href="https://solveninja.org" target="_blank" rel="noopener noreferrer" className="text-orange-600 font-bold underline">{t.home.portfolioLinkLabel}</a>{t.home.portfolioLinkSuffix}
                 </p>
                 
                 <form onSubmit={handleProfileSave} className="flex flex-col gap-4">
@@ -174,7 +174,7 @@ const Home = () => {
             <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
               <div className="flex items-center justify-between mb-4 px-2">
                 <h2 className="font-bold text-gray-800 text-sm">{t.observationProgress}</h2>
-                <div className="text-[10px] text-orange-600 font-black uppercase tracking-tighter">Ninja Status: Active</div>
+                <div className="text-[10px] text-orange-600 font-black uppercase tracking-tighter">{t.home.ninjaStatus}</div>
               </div>
 
               <div className="grid grid-cols-2 gap-3 mb-6">
