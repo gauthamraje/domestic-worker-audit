@@ -67,10 +67,14 @@ export const AuditProvider = ({ children }) => {
   };
 
   const updateCurrentSpot = (updates) => {
-    setState(prev => ({
-      ...prev,
-      currentSpot: { ...prev.currentSpot, ...updates }
-    }));
+    setState(prev => {
+      // Guard: if we somehow lost currentSpot (refresh/navigation), don't hard-crash the app.
+      if (!prev.currentSpot) return prev;
+      return {
+        ...prev,
+        currentSpot: { ...prev.currentSpot, ...updates }
+      };
+    });
   };
 
   const completeSpot = () => {

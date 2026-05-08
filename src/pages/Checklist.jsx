@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAudit } from '../context/AuditContext';
 import { useTranslation } from '../hooks/useTranslation';
+import { translations } from '../translations';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, ArrowRight, Camera, MapPin, SkipForward, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +13,12 @@ const Checklist = () => {
   const [qIndex, setQIndex] = useState(-1); // -1 for Photo/Location step
   const [answers, setAnswers] = useState({});
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const tEN = translations.EN.checklist;
+
+  useEffect(() => {
+    // If user lands here without an active spot (refresh/back), recover gracefully.
+    if (!state.currentSpot) navigate('/');
+  }, [state.currentSpot, navigate]);
 
   const refreshLocation = () => {
     if ("geolocation" in navigator) {
@@ -52,7 +59,7 @@ const Checklist = () => {
 
     // Phase: Audit
     const base = [
-      { id: 'q1', text: stopType === 'work' ? t.q1Work : t.o1, options: stopType === 'work' ? t.q1WorkOpts : t.o1Opts },
+      { id: 'q1', text: stopType === 'work' ? (t.q1Work || tEN.q1Work) : t.o1, options: stopType === 'work' ? (t.q1WorkOpts || tEN.q1WorkOpts) : t.o1Opts },
       { id: 'q2', text: t.o2, options: t.o2Opts },
       { id: 'q3', text: t.o3, options: t.o3Opts }
     ];
@@ -61,14 +68,15 @@ const Checklist = () => {
       base.push({ id: 'q4', text: t.o4, options: t.o4Opts });
     }
 
-    base.push({ id: 'q5', text: t.o5, options: stopType === 'work' ? t.q5WorkOpts : t.o5Opts });
+    base.push({ id: 'q5', text: t.o5, options: stopType === 'work' ? (t.q5WorkOpts || tEN.q5WorkOpts) : t.o5Opts });
 
     // Entry Block (Q6, Q7, Q8)
     base.push({ id: 'q6', text: t.q6Comfort, options: t.q6ComfortOpts });
     base.push({ id: 'q7', text: t.q7Waiting, options: t.q7WaitingOpts });
     
     // Conditional Q8 (only if Q7 is Yes)
-    if (answers['q7']?.includes('Yes')) {
+    const yesForQ7 = Array.isArray(t.q7WaitingOpts) ? t.q7WaitingOpts[0] : undefined;
+    if (yesForQ7 && answers['q7'] === yesForQ7) {
       base.push({ id: 'q8', text: t.q8CanSit, options: t.q8CanSitOpts });
     }
 
@@ -156,6 +164,22 @@ const Checklist = () => {
   }
 
   const currentQ = questions[qIndex];
+  if (!state.currentSpot) return null;
+  if (!currentQ || !Array.isArray(currentQ.options)) {
+    return (
+      <div className="page bg-white">
+        <header className="p-6 pb-2">
+          <h2 className="text-2xl font-black text-gray-800 tracking-tight">Something went wrong</h2>
+          <p className="text-gray-500 text-sm font-medium mt-1">Please return to Home and start again.</p>
+        </header>
+        <div className="fixed-footer">
+          <button onClick={() => navigate('/')} className="bg-orange-600 text-white p-5 rounded-3xl font-black text-xl shadow-xl w-full">
+            Go to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page bg-white">

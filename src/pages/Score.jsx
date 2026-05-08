@@ -14,6 +14,10 @@ const Score = () => {
   const [isDone, setIsDone] = useState(false);
 
   const handleFinish = async () => {
+    if (!state.currentSpot) {
+      navigate('/');
+      return;
+    }
     if (selected !== null && !isSaving) {
       setIsSaving(true);
       try {
@@ -36,6 +40,25 @@ const Score = () => {
     { val: 4, label: t.score4, desc: t.score4Desc },
     { val: 'Not Scored', label: t.score0, desc: t.score0Desc }
   ];
+
+  if (!state.currentSpot) {
+    return (
+      <div className="page bg-white">
+        <header className="p-6 pb-2">
+          <h2 className="text-2xl font-black text-gray-800 tracking-tight">No active spot</h2>
+          <p className="text-gray-500 text-sm font-medium mt-1">Please start a new observation/audit from Home.</p>
+        </header>
+        <div className="fixed-footer">
+          <button
+            onClick={() => navigate('/')}
+            className="bg-orange-600 text-white p-5 rounded-3xl font-black text-xl shadow-xl w-full"
+          >
+            Go to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="page bg-white">
