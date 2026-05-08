@@ -41,7 +41,7 @@ const Score = () => {
     <div className="page bg-white">
       <header className="p-6 pb-2">
         <h2 className="text-3xl font-black text-gray-800 tracking-tight mb-1">{t.scoreTitle}</h2>
-        <p className="text-gray-500 text-sm font-medium">{t.checklist.scoreSubtitle}</p>
+        <p className="text-gray-500 text-sm font-medium">{t.scoreSubtitle}</p>
       </header>
 
       <div className="content-area py-4">
